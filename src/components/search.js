@@ -5,7 +5,7 @@ import { Index } from "elasticlunr"
 import { Link } from "gatsby"
 import { RiSearchLine } from "react-icons/ri"
 
-export default class Search extends Component {
+class Search extends Component {
   constructor(props) {
     super(props)
     this.state = { showSearch: false }
@@ -20,6 +20,12 @@ export default class Search extends Component {
     this.setState(state => ({
       showSearch: !state.showSearch,
     }))
+  }
+
+  sanitizeInput(input) {
+    const div = document.createElement('div');
+    div.appendChild(document.createTextNode(input));
+    return div.innerHTML;
   }
 
   render() {
@@ -45,7 +51,7 @@ export default class Search extends Component {
               {this.state.results.map(page => (
                 <li key={page.id}>
                   {page.template === "blog-post" ? (
-                    <Link to={page.slug}>{page.title}</Link>
+                    <Link to={page.slug}>{this.sanitizeInput(page.title)}</Link>
                   ) : (
                     ""
                   )}
